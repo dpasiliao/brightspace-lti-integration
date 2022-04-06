@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lti-launch-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lti-launch
+  template:
+    metadata:
+      labels:
+        app: lti-launch
+    spec:
+      containers:
+        - name: lti-launch
+          image: dpasiliao/lti-launch
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lti-launch-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: lti-launch
+  ports:
+    - name: lti-launch
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
